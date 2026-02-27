@@ -1,3 +1,4 @@
+````markdown
 <h1 align="center">
     omm.nvim
 </h1>
@@ -6,33 +7,125 @@
     nvim integration for <a href="https://github.com/dhth/omm">omm</a>
 </p>
 
+---
+
 ## Requirements
 
 - [omm](https://github.com/dhth/omm)
-- omm executable in your PATH
+- `omm` executable available in your `$PATH`
+- Neovim 0.9+ (recommended 0.10+)
+
+---
 
 ## Installation
 
-### Lazy
+### lazy.nvim
 
 ```lua
-return {
+{
   "davitostes/omm-nvim",
+  opts = {
+    position = "float", -- left|right|top|bottom|float
+    size = 0.35,        -- number or 0-1 fraction
+    cmd = "omm",
+    float = {
+      width = 0.8,
+      height = 0.8,
+      border = "rounded",
+    },
+  },
+  config = function(_, opts)
+    require("omm-nvim").setup(opts)
+  end,
 }
+````
+
+---
+
+### vim.pack (Neovim 0.12+)
+
+```lua
+vim.pack.add({
+  { src = "https://github.com/davitostes/omm-nvim" }
+})
+
+require("omm-nvim").setup({
+  position = "float", -- left|right|top|bottom|float
+  size = 0.35,
+  cmd = "omm",
+  float = {
+    width = 0.8,
+    height = 0.8,
+    border = "rounded",
+  },
+})
 ```
 
-## Using
+---
 
-- Adds the command `Omm` to open omm in a floating window.
+## Usage
+
+The plugin adds the command:
+
+```
+:Omm
+```
+
+This toggles the omm UI window.
+
+You can also pass a position:
+
+```
+:Omm float
+:Omm left
+:Omm right
+:Omm top
+:Omm bottom
+```
+
+---
+
+## Keybinding Example
+
+```lua
+vim.keymap.set("n", "<leader>o", "<cmd>Omm<CR>", { desc = "Toggle OMM" })
+```
+
+---
+
+## Configuration Options
+
+```lua
+require("omm-nvim").setup({
+  cmd = "omm",
+  position = "bottom", -- left|right|top|bottom|float
+  size = 20,           -- height/width or 0-1 fraction
+  enter_insert = true,
+  focus = true,
+  float = {
+    width = 0.8,       -- 0-1 fraction or absolute
+    height = 0.8,
+    border = "rounded",
+  },
+})
+```
+
+---
+
+## Behavior
+
+* Reuses the same terminal buffer.
+* Supports split or floating layouts.
+* `q` closes the window.
+* Automatically enters terminal mode (configurable).
+
+---
+
+## Screenshots
 
 ![Command](./images/command.png)
 
 ![Window](./images/window.png)
 
-## Tips
-
-- You can set a keybinding to open omm with the command `Omm`:
-
-```lua
-vim.keymap.set("n", "<leader>o", ":Omm<CR>", {})
+```
 ```
