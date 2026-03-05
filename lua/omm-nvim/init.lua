@@ -141,11 +141,11 @@ local function enter_terminal_if_needed()
 end
 
 local function set_buf_keymaps(buf)
-  vim.keymap.set("t", "q", function()
+  vim.keymap.set("t", "<C-q>", function()
     require("omm-nvim").close()
   end, { buffer = buf, noremap = true, silent = true })
 
-  vim.keymap.set("n", "q", function()
+  vim.keymap.set("n", "<C-q>", function()
     require("omm-nvim").close()
   end, { buffer = buf, noremap = true, silent = true })
 end
