@@ -33,6 +33,7 @@
       height = 0.8,
       border = "rounded",
     },
+    editor = "vi"
   },
   config = function(_, opts)
     require("omm-nvim").setup(opts)
@@ -58,6 +59,7 @@ require("omm-nvim").setup({
     height = 0.8,
     border = "rounded",
   },
+  editor = "vi"
 })
 ```
 
@@ -107,6 +109,7 @@ require("omm-nvim").setup({
     height = 0.8,
     border = "rounded",
   },
+  editor = "vi"
 })
 ```
 
