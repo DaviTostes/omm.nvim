@@ -11,6 +11,7 @@ M.config = {
     height = 0.8,
     border = "rounded",
   },
+  editor = "vi"
 }
 
 local state = {
@@ -108,6 +109,14 @@ local function open_float(buf)
   })
 end
 
+local function build_cmd()
+  local cmd = M.config.cmd
+  if M.config.editor and M.config.editor ~= "" then
+    cmd = cmd .. " --editor " .. vim.fn.shellescape(M.config.editor)
+  end
+  return cmd
+end
+
 local function ensure_job_running()
   if state.job ~= nil then
     return
@@ -116,10 +125,9 @@ local function ensure_job_running()
     return
   end
 
-  -- garante que o termopen vai “pegar” o buffer certo
   vim.api.nvim_set_current_buf(state.buf)
 
-  state.job = vim.fn.termopen(M.config.cmd, {
+  state.job = vim.fn.termopen(build_cmd(), {
     on_exit = function()
       state.job = nil
     end,
@@ -133,12 +141,10 @@ local function enter_terminal_if_needed()
 end
 
 local function set_buf_keymaps(buf)
-  -- in terminal mode
   vim.keymap.set("t", "q", function()
     require("omm-nvim").close()
   end, { buffer = buf, noremap = true, silent = true })
 
-  -- if user leaves terminal-mode and is in normal mode in that buffer
   vim.keymap.set("n", "q", function()
     require("omm-nvim").close()
   end, { buffer = buf, noremap = true, silent = true })
